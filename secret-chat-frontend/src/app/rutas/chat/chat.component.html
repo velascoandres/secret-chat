@@ -1,0 +1,35 @@
+<!--<label>-->
+<!--  Ingresa tu nickname:-->
+<!--  <input type="text" [(ngModel)]="nickName">-->
+<!--</label>-->
+<!--<button (click)="enviarNickName()" [disabled]="!nickName">Enviar</button>-->
+
+<nb-layout>
+  <nb-layout-header fixed>
+    Registrado como: {{nickName}}
+  </nb-layout-header>
+  <nb-sidebar class="" left>
+    <nb-card size="small">
+      <nb-list>
+        <nb-list-item *ngFor="let usuario of usuariosRegistrados">
+          <nb-user [name]="usuario" [title]="usuario">
+          </nb-user>
+        </nb-list-item>
+      </nb-list>
+    </nb-card>
+  </nb-sidebar>
+  <nb-layout-column class="">
+    <nb-chat title="Chat General" [scrollBottom]="true" size="giant">
+      <nb-chat-message
+        *ngFor="let msg of mensajes"
+        [message]="msg.contenido"
+        [sender]="msg.emisor"
+        [date]="msg.fechaEnvio"
+        [reply]="msg.respuesta"
+      >
+      </nb-chat-message>
+      <nb-chat-form (send)="enviarMensajeSalaGeneral($event)" [dropFiles]="false">
+      </nb-chat-form>
+    </nb-chat>
+  </nb-layout-column>
+</nb-layout>

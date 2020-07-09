@@ -1,0 +1,24 @@
+<nb-card>
+  <nb-card-header>
+    <h3>Ingresar nickname</h3>
+  </nb-card-header>
+  <nb-card-body>
+    <label>
+      <input
+        nbInput
+        placeholder="Ingresa tu nickname"
+        [(ngModel)]="nickname"
+      >
+    </label>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      nbButton
+      status="success"
+      (click)="enviarDatos()"
+      [disabled]="!nickname"
+    >
+      Ingresar
+    </button>
+  </nb-card-footer>
+</nb-card>
