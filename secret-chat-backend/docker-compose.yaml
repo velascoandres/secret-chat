@@ -1,0 +1,28 @@
+version: '0.2'
+services:
+  mongo_db:
+    container_name: base_mongo
+    image: mongo:latest
+    restart: always
+    environment:
+      # Usuario de la base de datos
+      MONGO_INITDB_ROOT_USERNAME: 'pimba_man'
+      # Password de la base de datos
+      MONGO_INITDB_ROOT_PASSWORD: '12345678'
+      # Nombre de la Base de datos
+      MONGO_INITDB_DATABASE: 'prueba'
+      # Root password
+      MONGODB_ROOT_PASSWORD: '12345678'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '30503:27017'
+    expose:
+      # Opens port 27017 on the container
+      - '27017'
+    volumes:
+      - mongo-db-volume:/data/db
+      - mongo-config-volume:/data/configdb
+# Names our volume
+volumes:
+  mongo-config-volume:
+  mongo-db-volume:

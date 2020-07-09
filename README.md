@@ -10,22 +10,29 @@ framework de `Nestjs`.
 
 ### Backend
 
-```shell_script
+```shell script
 nest new secret-chat-backend
 
 ```
 
 ### Frontend
 
-```shell_script
+```shell script
 ng new secret-chat-front
 ```
 
 
 Instalar las librerias para websockets en el backend
 
-```shell_script
+```shell script
  npm i --save @nestjs/websockets @nestjs/platform-socket.io
+npm i --save-dev @types/socket.io
+
+```
+```shell script
+npm i @pimba/excalibur --save
+npm install class-validator --save
+npm install --save @nestjs/typeorm typeorm mongodb --save
 ```
 
 
