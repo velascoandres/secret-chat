@@ -12,7 +12,6 @@ export class AppGateway {
   @SubscribeMessage('intermediario-chat')
   intermediadioChat(client: Socket, mensaje: MensajeInterface) {
     const esMensajePrivado = !!mensaje.destinatario;
-    console.log('es', esMensajePrivado);
     if (esMensajePrivado) {
       const destinario = mensaje.destinatario;
       const existeUsuario = Utils.existeUsuario(this.usuariosActivos, destinario);
@@ -48,11 +47,6 @@ export class AppGateway {
           error: true,
         },
       );
-      // throw new BadRequestException(
-      //   {
-      //     mensaje: 'Ya existe alguien registrado con ese nombre!!',
-      //   },
-      // );
     } else {
       this.usuariosActivos.push(nickName);
       const contenido = nickName;
@@ -62,7 +56,6 @@ export class AppGateway {
         fechaEnvio: fecha,
         contenido,
       };
-      console.log('alguien se ha unido');
       client.emit('chat-general-info', 'todo bien');
       client.broadcast.emit('usuarios-conectados', mensaje);
       client.emit('usuarios-conectados', mensaje);

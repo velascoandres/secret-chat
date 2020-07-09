@@ -9,7 +9,10 @@
     Registrado como: {{nickName}}
   </nb-layout-header>
   <nb-sidebar class="" left>
-    <nb-card size="small">
+    <nb-card size="medium">
+      <nb-card-header>
+        <h3>Usuarios Conectados</h3>
+      </nb-card-header>
       <nb-list>
         <nb-list-item *ngFor="let usuario of usuariosRegistrados">
           <nb-user [name]="usuario" [title]="usuario">
