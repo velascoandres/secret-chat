@@ -3,6 +3,9 @@ import { ChatService } from '../../servicios/chat.service';
 import { MensajeInterface } from './interfaces/mensaje.interface';
 import { NbDialogService, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
 import { PreguntarNicknameComponent } from '../../modales/preguntar-nickname/preguntar-nickname.component';
+import { UsuarioService } from '../../servicios/usuario.service';
+import { UsuarioInterface } from './interfaces/usuario.interface';
+import { RespuestaConsultaInterface } from './interfaces/respuesta-consulta.interface';
 
 @Component({
   selector: 'app-chat',
@@ -11,7 +14,7 @@ import { PreguntarNicknameComponent } from '../../modales/preguntar-nickname/pre
 })
 export class ChatComponent implements OnInit, AfterViewInit {
   nickName: string;
-  usuariosRegistrados: string[] = [];
+  usuariosRegistrados: UsuarioInterface[] = [];
   mensajes: MensajeInterface[] = [];
 
   escuchadorListaUsuario$ = this._chatService.escucharInfoChat;
@@ -21,16 +24,21 @@ export class ChatComponent implements OnInit, AfterViewInit {
     private readonly _chatService: ChatService,
     private _dialogService: NbDialogService,
     private _toasterService: NbToastrService,
+    private readonly _usuarioService: UsuarioService,
   ) {
   }
 
   ngOnInit(): void {
-    this.escucharListaUsaurios();
-    this.escucharMensajesSalaGeneral();
   }
 
-  enviarNickName() {
-    this._chatService.registrarse(this.nickName);
+  consultarUsuariosRegistrados() {
+    const respuesta$ = this._usuarioService.encontrarTodos({});
+    respuesta$
+      .subscribe(
+        (respuesta: RespuestaConsultaInterface<UsuarioInterface>) => {
+          this.usuariosRegistrados = respuesta.data;
+        }
+      );
   }
 
   abrirModal() {
@@ -46,6 +54,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
       .subscribe(
         (respuesta: { nickname: string }) => {
           this.nickName = respuesta.nickname;
+          this.consultarUsuariosRegistrados();
+          this.escucharListaUsaurios();
+          this.escucharMensajesSalaGeneral();
         },
       );
   }
@@ -73,17 +84,17 @@ export class ChatComponent implements OnInit, AfterViewInit {
   private escucharListaUsaurios() {
     this.escuchadorListaUsuario$
       .subscribe(
-        (mensaje: MensajeInterface) => {
+        (usuario: UsuarioInterface) => {
           this._toasterService
             .info(
-              `${mensaje.contenido} se ha unido a la sala`,
+              `${usuario.nickname} se ha unido a la sala`,
               'Info',
               {
                 destroyByClick: true,
                 position: NbGlobalPhysicalPosition.TOP_LEFT,
               },
             );
-          this.usuariosRegistrados.push(mensaje.contenido);
+          this.usuariosRegistrados.push(usuario);
         },
       );
   }

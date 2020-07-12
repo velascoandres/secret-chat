@@ -1,9 +1,3 @@
-<!--<label>-->
-<!--  Ingresa tu nickname:-->
-<!--  <input type="text" [(ngModel)]="nickName">-->
-<!--</label>-->
-<!--<button (click)="enviarNickName()" [disabled]="!nickName">Enviar</button>-->
-
 <nb-layout>
   <nb-layout-header fixed>
     Registrado como: {{nickName}}
@@ -15,7 +9,7 @@
       </nb-card-header>
       <nb-list>
         <nb-list-item *ngFor="let usuario of usuariosRegistrados">
-          <nb-user [name]="usuario" [title]="usuario">
+          <nb-user [name]="usuario.nickname" [title]="usuario.nickname">
           </nb-user>
         </nb-list-item>
       </nb-list>

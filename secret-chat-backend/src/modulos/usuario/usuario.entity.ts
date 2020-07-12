@@ -1,13 +1,10 @@
 import { AbstractMongoEntity } from '@pimba/excalibur/lib';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 
 @Entity('usuario')
+@Index(['nickname'],{unique: true})
 export class UsuarioEntity extends AbstractMongoEntity {
-  @Column(
-    {
-      type: 'varchar',
-      unique: true,
-    },
-  )
+  @Column()
+  @Index({unique: true})
   nickname: string;
 }

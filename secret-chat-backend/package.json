@@ -27,7 +27,7 @@
     "@nestjs/platform-socket.io": "^7.3.2",
     "@nestjs/typeorm": "^7.1.0",
     "@nestjs/websockets": "^7.3.2",
-    "@pimba/excalibur": "0.0.16-test",
+    "@pimba/excalibur": "0.0.19-test",
     "class-validator": "^0.12.2",
     "mongodb": "^3.5.9",
     "reflect-metadata": "^0.1.13",

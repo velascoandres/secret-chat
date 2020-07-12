@@ -18,6 +18,8 @@ import {
 } from '@nebular/theme';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PreguntarNicknameComponent } from './modales/preguntar-nickname/preguntar-nickname.component';
+import { UsuarioService } from './servicios/usuario.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -47,9 +49,11 @@ import { PreguntarNicknameComponent } from './modales/preguntar-nickname/pregunt
     NbButtonModule,
     NbToastrModule.forRoot(),
     NbDialogModule.forRoot(),
+    HttpClientModule,
   ],
   providers: [
     ChatService,
+    UsuarioService,
   ],
   bootstrap: [AppComponent],
 })

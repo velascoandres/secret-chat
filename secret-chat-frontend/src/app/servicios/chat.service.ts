@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { MensajeInterface } from '../rutas/chat/interfaces/mensaje.interface';
+import { UsuarioInterface } from '../rutas/chat/interfaces/usuario.interface';
 
 @Injectable()
 export class ChatService {
@@ -11,16 +12,12 @@ export class ChatService {
   }
 
   registrarse(
-    nickname: string,
+    usuario: UsuarioInterface,
   ) {
     const respuesta = this._socket.emit(
       'chat-general-info',
-      nickname,
-      (respuesta) => {
-        console.log(respuesta);
-      },
+      usuario,
     );
-    console.log(respuesta);
   }
 
   get escucharInfoChat(): Observable<any> {
@@ -39,9 +36,9 @@ export class ChatService {
     this._socket.emit('intermediario-chat', mensaje);
   }
 
-  get escucharRespuestaChatInfo(): Observable<any> {
-    return this._socket.fromEvent(
-      'chat-general-info',
-    );
-  }
+  // get escucharRespuestaChatInfo(): Observable<any> {
+  //   return this._socket.fromEvent(
+  //     'chat-general-info',
+  //   );
+  // }
 }

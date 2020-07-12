@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AppGateway } from './app.gateway';
 import { UsuarioModule } from './modulos/usuario/usuario.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioEntity } from './modulos/usuario/usuario.entity';
+import { ChatModule } from './modulos/chat/chat.module';
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { UsuarioEntity } from './modulos/usuario/usuario.entity';
         useNewUrlParser: true,
         dropSchema: true,
         useUnifiedTopology: true,
+        synchronize: true,
         url: `mongodb://pimba_man:12345678@localhost:30503/test?authSource=admin`,
         entities: [
           UsuarioEntity,
@@ -23,13 +24,13 @@ import { UsuarioEntity } from './modulos/usuario/usuario.entity';
       },
     ),
     UsuarioModule,
+    ChatModule,
   ],
   controllers: [
     AppController,
   ],
   providers: [
     AppService,
-    AppGateway,
   ],
 })
 export class AppModule {}
