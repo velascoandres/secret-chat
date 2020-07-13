@@ -17,7 +17,7 @@ export class UsuarioService {
   }
 
   encontrarTodos(
-    parametrosBusqueda: { [k in string]: string },
+    parametrosBusqueda?: { [k in string]: string },
   ): Observable<RespuestaConsultaInterface<UsuarioInterface>> {
     return this._httpClient.get(
       this.uri,

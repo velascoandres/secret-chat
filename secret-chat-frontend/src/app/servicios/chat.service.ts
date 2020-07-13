@@ -14,7 +14,7 @@ export class ChatService {
   registrarse(
     usuario: UsuarioInterface,
   ) {
-    const respuesta = this._socket.emit(
+    this._socket.emit(
       'chat-general-info',
       usuario,
     );
@@ -35,10 +35,4 @@ export class ChatService {
   enviarMensajeSalaGeneral(mensaje: Partial<MensajeInterface>) {
     this._socket.emit('intermediario-chat', mensaje);
   }
-
-  // get escucharRespuestaChatInfo(): Observable<any> {
-  //   return this._socket.fromEvent(
-  //     'chat-general-info',
-  //   );
-  // }
 }

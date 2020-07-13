@@ -1,4 +1,4 @@
-version: '0.2'
+version: '0.3'
 services:
   mongo_db:
     container_name: base_mongo
@@ -6,13 +6,13 @@ services:
     restart: always
     environment:
       # Usuario de la base de datos
-      MONGO_INITDB_ROOT_USERNAME: 'pimba_man'
+      MONGO_INITDB_ROOT_USERNAME: 'username'
       # Password de la base de datos
-      MONGO_INITDB_ROOT_PASSWORD: '12345678'
+      MONGO_INITDB_ROOT_PASSWORD: '123'
       # Nombre de la Base de datos
-      MONGO_INITDB_DATABASE: 'prueba'
+      MONGO_INITDB_DATABASE: 'base_usuario'
       # Root password
-      MONGODB_ROOT_PASSWORD: '12345678'
+      MONGODB_ROOT_PASSWORD: '123'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - '30503:27017'

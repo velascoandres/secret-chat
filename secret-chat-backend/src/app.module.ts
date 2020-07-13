@@ -12,12 +12,12 @@ import { ChatModule } from './modulos/chat/chat.module';
       {
         type: 'mongodb',
         name: 'conexion_mongo',
-        database: 'prueba',
+        database: 'base_usuario',
         useNewUrlParser: true,
         dropSchema: true,
         useUnifiedTopology: true,
-        synchronize: true,
-        url: `mongodb://pimba_man:12345678@localhost:30503/test?authSource=admin`,
+        synchronize: false,
+        url: `mongodb://username:123@localhost:30503/base_usuario?authSource=admin`,
         entities: [
           UsuarioEntity,
         ],

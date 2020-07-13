@@ -31,13 +31,17 @@ export class ChatComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
   }
 
+  cargarMasUsuarios(pagina: number) {
+    console.log(pagina);
+  }
+
   consultarUsuariosRegistrados() {
-    const respuesta$ = this._usuarioService.encontrarTodos({});
+    const respuesta$ = this._usuarioService.encontrarTodos(undefined);
     respuesta$
       .subscribe(
         (respuesta: RespuestaConsultaInterface<UsuarioInterface>) => {
           this.usuariosRegistrados = respuesta.data;
-        }
+        },
       );
   }
 

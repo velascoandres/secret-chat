@@ -1,3 +1,8 @@
 import { SocketIoConfig } from 'ngx-socket-io';
+import { environment } from '../../environments/environment';
 
-export const CONFIGURACION_WEBSOCKET_CHAT: SocketIoConfig = { url: 'http://localhost:3001/chat', options: {} };
+export const CONFIGURACION_WEBSOCKET_CHAT: SocketIoConfig =
+  {
+    url: `${environment.protocolo}://${environment.dominio}:${environment.puerto}/chat`,
+    options: {},
+  };
