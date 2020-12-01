@@ -1,7 +1,14 @@
 import { BaseMongoDTO } from '@pimba/excalibur/lib';
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class UsuarioCreateDto extends BaseMongoDTO {
   @IsNotEmpty()
-  nickname: string;
+  username: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
 }

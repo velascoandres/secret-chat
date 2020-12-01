@@ -31,4 +31,13 @@ export class AuthService {
         return this.usuarioService.createOne(newUser);
     }
 
+    async validateEmail(email: string): Promise<boolean> {
+        const user = await this.usuarioService.findOne({
+            where: {
+                email,
+            }
+        });
+        return !!user;
+    }
+
 }
