@@ -13,7 +13,7 @@ export class ChatGateway {
   ) {
   }
 
-  async encontrarUsuario(nickName: string) {
+  async encontrarUsuario(nickName: string): Promise<UsuarioEntity> {
     const consulta = {
       where: {
         nickname: nickName,
@@ -27,7 +27,7 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('intermediario-chat')
-  async intermediadioChat(client: Socket, mensaje: MensajeInterface) {
+  intermediadioChat(client: Socket, mensaje: MensajeInterface): void {
     const esMensajePrivado = !!mensaje.destinatario;
     if (esMensajePrivado) {
       const destinario = mensaje.destinatario;
@@ -56,7 +56,7 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('chat-general-info')
-  async registrarse(client: Socket, usuario: UsuarioEntity) {
+  registrarse(client: Socket, usuario: UsuarioEntity): void {
     client.emit('chat-general-info', 'todo bien');
     client.broadcast.emit('usuarios-conectados', usuario);
     client.emit('usuarios-conectados', usuario);

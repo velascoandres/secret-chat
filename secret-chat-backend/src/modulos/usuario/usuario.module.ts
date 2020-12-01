@@ -4,24 +4,26 @@ import { UsuarioController } from './usuario.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioEntity } from './usuario.entity';
 
-@Module({
-  imports: [
-    TypeOrmModule.forFeature(
-      [
-        UsuarioEntity,
-      ],
-      'conexion_mongo',
-    )
-  ],
-  providers: [
-    UsuarioService,
-  ],
-  controllers: [
-    UsuarioController
-  ],
-  exports: [
-    UsuarioService,
-  ]
-})
+@Module(
+  {
+    imports: [
+      TypeOrmModule.forFeature(
+        [
+          UsuarioEntity,
+        ],
+        'conexion_mongo',
+      )
+    ],
+    providers: [
+      UsuarioService,
+    ],
+    controllers: [
+      UsuarioController
+    ],
+    exports: [
+      UsuarioService,
+    ]
+  }
+)
 export class UsuarioModule {
 }

@@ -6,5 +6,13 @@ import { Column, Entity, Index } from 'typeorm';
 export class UsuarioEntity extends AbstractMongoEntity {
   @Column()
   @Index({unique: true})
-  nickname: string;
+  username: string;
+
+  @Column()
+  @Index({unique: true})
+  email: string;
+
+
+  @Column()
+  password: string;
 }
