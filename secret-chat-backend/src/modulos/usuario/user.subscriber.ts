@@ -22,7 +22,6 @@ export class UserSubscriber implements EntitySubscriberInterface<UsuarioEntity> 
     }
 
     beforeInsert(event: InsertEvent<UsuarioEntity>): void {
-        console.log('trigered');
         const salt = bcrypt.genSaltSync();
         event.entity.password = bcrypt.hashSync(event.entity.password, salt);
     }
