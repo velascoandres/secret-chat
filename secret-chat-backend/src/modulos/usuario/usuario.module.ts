@@ -3,6 +3,8 @@ import { UsuarioService } from './usuario.service';
 import { UsuarioController } from './usuario.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioEntity } from './usuario.entity';
+import { UserSubscriber } from './user.subscriber';
+import { Connection } from 'typeorm';
 
 @Module(
   {
@@ -12,10 +14,11 @@ import { UsuarioEntity } from './usuario.entity';
           UsuarioEntity,
         ],
         'conexion_mongo',
-      )
+      ),
     ],
     providers: [
       UsuarioService,
+      UserSubscriber,
     ],
     controllers: [
       UsuarioController

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioEntity } from './modulos/usuario/usuario.entity';
 import { ChatModule } from './modulos/chat/chat.module';
 import { AuthModule } from './modulos/auth/auth.module';
+import { UserSubscriber } from './modulos/usuario/user.subscriber';
 
 @Module({
   imports: [

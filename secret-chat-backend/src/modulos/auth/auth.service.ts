@@ -11,7 +11,7 @@ export class AuthService {
     ) { }
 
 
-    async validateUser(username: string, pass: string): Promise<Omit<UsuarioEntity, 'password'>> {
+    async validateUser(username: string, pass: string): Promise<Omit<UsuarioEntity, 'password' | 'hashPassword'>> {
         const user = await this.usuarioService.findOne(
             {
                 where: {
@@ -28,7 +28,7 @@ export class AuthService {
 
 
     async register(newUser: Partial<UsuarioEntity> | UsuarioCreateDto): Promise<UsuarioEntity> {
-        return this.usuarioService.createOne(newUser);
+        return await this.usuarioService.createOne(newUser);
     }
 
     async validateEmail(email: string): Promise<boolean> {
