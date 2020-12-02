@@ -5,6 +5,7 @@ import { UsuarioModule } from './modulos/usuario/usuario.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioEntity } from './modulos/usuario/usuario.entity';
 import { ChatModule } from './modulos/chat/chat.module';
+import { AuthModule } from './modulos/auth/auth.module';
 
 @Module({
   imports: [
@@ -12,12 +13,15 @@ import { ChatModule } from './modulos/chat/chat.module';
       {
         type: 'mongodb',
         name: 'conexion_mongo',
-        database: 'base_usuario',
-        useNewUrlParser: true,
+        database: 'prueba',
         dropSchema: true,
         useUnifiedTopology: true,
-        synchronize: false,
-        url: `mongodb://username:123@localhost:30503/base_usuario?authSource=admin`,
+        synchronize: true,
+        password: '12345678',
+        username: 'pimba_man',
+        host: 'localhost',
+        port: 30503,
+        authSource: 'admin',
         entities: [
           UsuarioEntity,
         ],
@@ -25,6 +29,7 @@ import { ChatModule } from './modulos/chat/chat.module';
     ),
     UsuarioModule,
     ChatModule,
+    AuthModule,
   ],
   controllers: [
     AppController,
@@ -33,4 +38,4 @@ import { ChatModule } from './modulos/chat/chat.module';
     AppService,
   ],
 })
-export class AppModule {}
+export class AppModule { }

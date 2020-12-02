@@ -40,4 +40,13 @@ export class AuthService {
         return !!user;
     }
 
+    async validateUsername(username: string): Promise<boolean> {
+        const user = await this.usuarioService.findOne({
+            where: {
+                username,
+            }
+        });
+        return !!user;
+    }
+
 }
