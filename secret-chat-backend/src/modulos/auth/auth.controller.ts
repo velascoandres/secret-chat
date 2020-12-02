@@ -3,6 +3,7 @@ import { Body, Request, Controller, InternalServerErrorException, Post, UseGuard
 import { UsuarioCreateDto } from '../usuario/dtos/usuario-create.dto';
 import { UsuarioEntity } from '../usuario/usuario.entity';
 import { AuthService } from './auth.service';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RegisterUserValidationPipe } from './pipes/register-user-validation.pipe';
 
@@ -28,8 +29,14 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(
-        @Request() req: any): Promise<{ access_token: string; }> {
+        @Request() req: any): Promise<{ access_token: string; refresh_token: string; }> {
         return this.authService.login(req.user);
+    }
+
+    @Post('refresh-token')
+    async refreshToken(
+        @Body() req: { refreshToken: string }): Promise<{ access_token: string; refresh_token: string; }> {
+        return await this.authService.refreshAccessToken(req.refreshToken);
     }
 
 

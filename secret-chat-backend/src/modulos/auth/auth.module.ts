@@ -5,7 +5,8 @@ import { AuthController } from './auth.controller';
 import { RegisterUserValidationPipe } from './pipes/register-user-validation.pipe';
 import { LocalStrategy } from './strategies/local.trategy';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module(
   {
@@ -13,13 +14,12 @@ import { jwtConstants } from './constants';
       AuthService,
       RegisterUserValidationPipe,
       LocalStrategy,
+      JwtRefreshStrategy,
     ],
     imports: [
       UsuarioModule,
-      JwtModule.register({
-        secret: jwtConstants.secret,
-        signOptions: { expiresIn: '60s' },
-      }),
+      JwtModule.register({}),
+      PassportModule.register({ defaultStrategy: 'local', refresh: 'jwt-refresh' }),
     ],
     controllers: [AuthController]
   },
