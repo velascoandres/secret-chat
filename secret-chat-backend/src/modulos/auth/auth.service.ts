@@ -17,10 +17,11 @@ export class AuthService {
 
 
     async validateUser(username: string, pass: string): Promise<Omit<UsuarioEntity, 'password' | 'hashPassword'>> {
-        const user = await this.usuarioService.findOne(
+        const [[user]] = await this.usuarioService.findAll(
             {
                 where: {
-                    username,
+                    username: {'$eq': username, '$or': true},
+                    email: {'$eq': username, '$or': true},
                 },
             }
         );

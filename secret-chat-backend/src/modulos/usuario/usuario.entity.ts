@@ -3,6 +3,7 @@ import { BeforeInsert, Column, Entity, Index } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Entity('usuario')
+@Index(['username', 'email'], {unique: true})
 export class UsuarioEntity extends AbstractMongoEntity {
   @Column()
   @Index({ unique: true })
