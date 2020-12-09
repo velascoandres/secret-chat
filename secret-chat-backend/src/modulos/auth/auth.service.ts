@@ -69,9 +69,12 @@ export class AuthService {
         return !!user;
     }
 
-    async login(user: Partial<UsuarioCreateDto>): Promise<{ access_token: string; refresh_token: string; }> {
-        const payload = { username: user.username, id: user.id };
-
+    async login(user: Partial<UsuarioCreateDto>): Promise<{ access_token: string; refresh_token: string; user: Partial<UsuarioEntity> }> {
+        const payload: Partial<UsuarioEntity> = {
+            username: user.username,
+            id: user.id,
+            email: user.email,
+        };
         const accessToken = this.jwtService.sign(payload,
             {
                 secret: jwtConstants.secret, // unique refresh secret from environment vars
@@ -84,6 +87,7 @@ export class AuthService {
         return {
             access_token: accessToken,
             refresh_token: refreshToken,
+            user: payload,
         };
     }
 
@@ -92,12 +96,12 @@ export class AuthService {
             // if (!refreshTokens.includes(refreshToken)) {
             //     throw new UnauthorizedException();
             // }
-            const payload =  await this.jwtService.verifyAsync<{ username: string; id: string }>(refreshToken, {secret: jwtRefreshConstants.secret });
+            const payload = await this.jwtService.verifyAsync<{ username: string; id: string }>(refreshToken, { secret: jwtRefreshConstants.secret });
             const accessToken = this.jwtService.sign(payload,
                 {
                     secret: jwtConstants.secret, // unique refresh secret from environment vars
                 });
-        
+
             return {
                 access_token: accessToken,
                 refresh_token: refreshToken,
