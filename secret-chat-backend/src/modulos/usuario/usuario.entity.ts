@@ -21,7 +21,7 @@ export class UsuarioEntity extends AbstractMongoEntity {
       default: false,
     }
   )
-  online: boolean;
+  online = false;
 
   // @BeforeInsert()
   // hashPassword(): void {

@@ -26,6 +26,7 @@ export class AuthService {
                 },
             }
         );
+        if (!user) return;
         const passwordCorrect = bcrypt.compareSync(pass, user.password);
 
         if (user && passwordCorrect) {
