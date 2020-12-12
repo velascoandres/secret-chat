@@ -4,9 +4,8 @@ import { UsuarioCreateDto } from '../usuario/dtos/usuario-create.dto';
 import { UsuarioEntity } from '../usuario/usuario.entity';
 import { UsuarioService } from '../usuario/usuario.service';
 import { jwtConstants, jwtRefreshConstants } from './constants';
+import * as bcrypt from 'bcrypt';
 
-// TODO storage
-let refreshTokens: string[] = [];
 @Injectable()
 export class AuthService {
 
@@ -27,7 +26,10 @@ export class AuthService {
                 },
             }
         );
-        if (user && user.password === pass) {
+        const salt = bcrypt.genSaltSync();
+        const hashpassword = bcrypt.hashSync(user.password, salt);
+        
+        if (user && hashpassword === pass) {
             const { password, ...result } = user;
             return result;
         }
