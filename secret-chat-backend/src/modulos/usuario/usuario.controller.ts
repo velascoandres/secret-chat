@@ -5,7 +5,7 @@ import { UsuarioService } from './usuario.service';
 import { UsuarioCreateDto } from './dtos/usuario-create.dto';
 import { UsuarioUpdateDto } from './dtos/usuario-update.dto';
 import {CrudDoc} from '@pimba/excalibur/lib';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 
 

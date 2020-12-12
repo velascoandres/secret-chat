@@ -20,8 +20,10 @@ export class AuthService {
         const [[user]] = await this.usuarioService.findAll(
             {
                 where: {
-                    username: {'$eq': username, '$or': true},
-                    email: {'$eq': username, '$or': true},
+                    $or: [
+                        { username: { '$eq': username } },
+                        { email: { '$eq': username }, },
+                    ],
                 },
             }
         );
