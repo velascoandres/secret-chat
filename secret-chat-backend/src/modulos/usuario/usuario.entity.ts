@@ -19,7 +19,6 @@ export class UsuarioEntity extends AbstractMongoEntity {
     {
       type: 'boolean',
       default: false,
-      nullable: true,
     }
   )
   online: boolean;
