@@ -1,9 +1,8 @@
 import { AbstractMongoEntity } from '@pimba/excalibur/lib';
-import { BeforeInsert, Column, Entity, Index } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import { Column, Entity, Index } from 'typeorm';
 
 @Entity('usuario')
-@Index(['username', 'email'], {unique: true})
+@Index(['username', 'email'], { unique: true })
 export class UsuarioEntity extends AbstractMongoEntity {
   @Column()
   @Index({ unique: true })
