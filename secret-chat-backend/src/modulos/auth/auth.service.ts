@@ -26,10 +26,9 @@ export class AuthService {
                 },
             }
         );
-        const salt = bcrypt.genSaltSync();
-        const hashpassword = bcrypt.hashSync(user.password, salt);
-        
-        if (user && hashpassword === pass) {
+        const passwordCorrect = bcrypt.compareSync(pass, user.password);
+
+        if (user && passwordCorrect) {
             const { password, ...result } = user;
             return result;
         }
