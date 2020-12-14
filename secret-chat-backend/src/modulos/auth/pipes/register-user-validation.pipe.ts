@@ -15,11 +15,18 @@ export class RegisterUserValidationPipe implements PipeTransform {
         const userDto = plainToClass(UsuarioCreateDto, newUser);
         const errors = await validate(userDto);
         const hasErrors = errors.length > 0;
-        if (hasErrors) throw new BadRequestException({ message: 'Invalid data' });
+        const logicErrors: Partial<Omit<UsuarioCreateDto, 'password'>> = {};
+        if (hasErrors) throw new BadRequestException({ message: 'Invalid data', errors });
         const existEmail = await this.authService.validateEmail(userDto.email);
         const existUsername = await this.authService.validateUsername(userDto.username);
-        if (existEmail) throw new BadRequestException({ message: 'The email has been taken from another user' });
-        if (existUsername) throw new BadRequestException({ message: 'The username has been taken from another user' });
+        if (existEmail) {
+            logicErrors.email = 'The email has been taken from another user';
+        }
+        if (existUsername) {
+            logicErrors.username = 'The username has been taken from another user';
+        }
+        const hasLogicErrors = Object.keys(logicErrors).length;
+        if (hasLogicErrors) throw new BadRequestException({ statusCode: 400, error: true, errors: logicErrors });
         return userDto;
     }
 }
