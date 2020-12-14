@@ -15,7 +15,7 @@ import { UserSubscriber } from './modulos/usuario/user.subscriber';
         type: 'mongodb',
         name: 'conexion_mongo',
         database: 'prueba',
-        dropSchema: true,
+        dropSchema: false,
         useUnifiedTopology: true,
         synchronize: true,
         password: '12345678',

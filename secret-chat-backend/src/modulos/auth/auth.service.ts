@@ -6,6 +6,13 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { jwtConstants, jwtRefreshConstants } from './constants';
 import * as bcrypt from 'bcrypt';
 
+
+export interface TokenUser {
+    access_token: string;
+    refresh_token: string;
+    user: Partial<UsuarioEntity>
+}
+
 @Injectable()
 export class AuthService {
 
@@ -52,8 +59,13 @@ export class AuthService {
     }
 
 
+    async registerAndLogin(newUser: Partial<UsuarioEntity> | UsuarioCreateDto): Promise<TokenUser> {
+        await this.usuarioService.createOne(newUser);
+        return this.login(newUser as Partial<UsuarioCreateDto>);
+    }
+
     async register(newUser: Partial<UsuarioEntity> | UsuarioCreateDto): Promise<UsuarioEntity> {
-        return await this.usuarioService.createOne(newUser);
+        return this.usuarioService.createOne(newUser);
     }
 
     async validateEmail(email: string): Promise<boolean> {
@@ -74,7 +86,7 @@ export class AuthService {
         return !!user;
     }
 
-    async login(user: Partial<UsuarioCreateDto>): Promise<{ access_token: string; refresh_token: string; user: Partial<UsuarioEntity> }> {
+    async login(user: Partial<UsuarioCreateDto>): Promise<TokenUser> {
         const payload: Partial<UsuarioEntity> = {
             username: user.username,
             id: user.id,
