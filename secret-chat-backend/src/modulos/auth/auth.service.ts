@@ -5,6 +5,7 @@ import { UsuarioEntity } from '../usuario/usuario.entity';
 import { UsuarioService } from '../usuario/usuario.service';
 import { jwtConstants, jwtRefreshConstants } from './constants';
 import * as bcrypt from 'bcrypt';
+import { userInfo } from 'os';
 
 
 export interface TokenUser {
@@ -108,12 +109,12 @@ export class AuthService {
         };
     }
 
-    async refreshAccessToken(refreshToken: string): Promise<{ access_token: string; refresh_token: string; }> {
+    async refreshAccessToken(refreshToken: string): Promise<TokenUser> {
         try {
             // if (!refreshTokens.includes(refreshToken)) {
             //     throw new UnauthorizedException();
             // }
-            const payload = await this.jwtService.verifyAsync<{ username: string; id: string }>(refreshToken, { secret: jwtRefreshConstants.secret });
+            const payload = await this.jwtService.verifyAsync<Partial<UsuarioEntity>>(refreshToken, { secret: jwtRefreshConstants.secret });
             const accessToken = this.jwtService.sign(payload,
                 {
                     secret: jwtConstants.secret, // unique refresh secret from environment vars
@@ -122,6 +123,7 @@ export class AuthService {
             return {
                 access_token: accessToken,
                 refresh_token: refreshToken,
+                user: payload
             };
         } catch (e) {
             console.error(e);

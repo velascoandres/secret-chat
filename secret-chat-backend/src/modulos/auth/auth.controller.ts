@@ -48,7 +48,7 @@ export class AuthController {
 
     @Post('refresh-token')
     async refreshToken(
-        @Body() req: { refreshToken: string }): Promise<Omit<TokenUser, 'user'>> {
+        @Body() req: { refreshToken: string }): Promise<TokenUser> {
         return await this.authService.refreshAccessToken(req.refreshToken);
     }
 
