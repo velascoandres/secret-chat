@@ -4,7 +4,6 @@ import { MensajeInterface } from '../../interfaces/interfaces-types';
 import { Utils } from '../../utils';
 import { UsuarioService } from '../usuario/usuario.service';
 import { UsuarioEntity } from '../usuario/usuario.entity';
-
 @WebSocketGateway(3001, { namespace: 'chat' })
 export class ChatGateway {
 
@@ -13,10 +12,13 @@ export class ChatGateway {
   ) {
   }
 
-  async encontrarUsuario(nickName: string): Promise<UsuarioEntity> {
+  async encontrarUsuario(username: string): Promise<UsuarioEntity> {
     const consulta = {
       where: {
-        nickname: nickName,
+        $or: [
+          { username: { '$eq': username } },
+          { email: { '$eq': username }, },
+      ],
       },
     };
     const respuestaConsulta: [UsuarioEntity[], number] = await this._usuarioService
