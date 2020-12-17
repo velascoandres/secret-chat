@@ -1,15 +1,24 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { OnGatewayConnection, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { MensajeInterface } from '../../interfaces/interfaces-types';
 import { Utils } from '../../utils';
 import { UsuarioService } from '../usuario/usuario.service';
 import { UsuarioEntity } from '../usuario/usuario.entity';
+import { Logger } from '@nestjs/common';
 @WebSocketGateway(3001, { namespace: 'chat' })
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection {
 
   constructor(
     private readonly _usuarioService: UsuarioService,
   ) {
+  }
+
+
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  handleConnection(client: any): void {
+    const logger = new Logger();
+    logger.verbose('Cliente conectado al gateway: chat');
   }
 
   async encontrarUsuario(username: string): Promise<UsuarioEntity> {
@@ -18,7 +27,7 @@ export class ChatGateway {
         $or: [
           { username: { '$eq': username } },
           { email: { '$eq': username }, },
-      ],
+        ],
       },
     };
     const respuestaConsulta: [UsuarioEntity[], number] = await this._usuarioService

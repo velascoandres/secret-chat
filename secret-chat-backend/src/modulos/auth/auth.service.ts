@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt/dist/jwt.service';
 import { UsuarioCreateDto } from '../usuario/dtos/usuario-create.dto';
 import { UsuarioEntity } from '../usuario/usuario.entity';
@@ -37,6 +37,8 @@ export class AuthService {
         if (!user) return;
         const passwordCorrect = bcrypt.compareSync(pass, user.password);
 
+
+        console.log(user, passwordCorrect);
         if (user && passwordCorrect) {
             const { password, ...result } = user;
             return result;
@@ -126,10 +128,12 @@ export class AuthService {
                 user: payload
             };
         } catch (e) {
-            console.error(e);
+            const logger = new Logger();
             if (e.name === 'TokenExpiredError') {
+                logger.error('Token expirado')
                 throw new UnauthorizedException();
             }
+            logger.error('Error en la peticion');
             throw new BadRequestException();
         }
     }
