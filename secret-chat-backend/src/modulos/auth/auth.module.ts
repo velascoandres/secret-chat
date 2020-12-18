@@ -7,6 +7,7 @@ import { LocalStrategy } from './strategies/local.trategy';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { WsAuthGuard } from './guards/ws-auth.guard';
 
 @Module(
   {
@@ -15,13 +16,20 @@ import { PassportModule } from '@nestjs/passport';
       RegisterUserValidationPipe,
       LocalStrategy,
       JwtRefreshStrategy,
+      WsAuthGuard,
     ],
     imports: [
       UsuarioModule,
       JwtModule.register({}),
       PassportModule.register({ defaultStrategy: 'local', refresh: 'jwt-refresh' }),
     ],
-    controllers: [AuthController]
+    controllers: [
+      AuthController,
+    ],
+    exports: [
+      WsAuthGuard,
+      AuthService,
+    ]
   },
 )
 export class AuthModule { }

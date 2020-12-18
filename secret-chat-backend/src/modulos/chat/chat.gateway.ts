@@ -4,7 +4,10 @@ import { MensajeInterface } from '../../interfaces/interfaces-types';
 import { Utils } from '../../utils';
 import { UsuarioService } from '../usuario/usuario.service';
 import { UsuarioEntity } from '../usuario/usuario.entity';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
+import { WsAuthGuard } from '../auth/guards/ws-auth.guard';
+
+@UseGuards(WsAuthGuard)
 @WebSocketGateway(3001, { namespace: 'chat' })
 export class ChatGateway implements OnGatewayConnection {
 
