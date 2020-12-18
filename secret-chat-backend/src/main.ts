@@ -1,10 +1,12 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AuthenticatedSocketIoAdapter } from './adapters/authenticated.adapter';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+  app.useWebSocketAdapter(new AuthenticatedSocketIoAdapter(app));
   app.useGlobalPipes(
     new ValidationPipe({
       disableErrorMessages: false,

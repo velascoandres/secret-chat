@@ -17,6 +17,7 @@ export class WsAuthGuard implements CanActivate {
     }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
+        const logger = new Logger();
         try {
             const data = context.switchToWs().getData();
             const authHeader = data.headers.authorization;
@@ -28,9 +29,14 @@ export class WsAuthGuard implements CanActivate {
             );
             // Bonus if you need to access your user after the guard 
             context.switchToWs().getData().user = validatedUser;
-            return Boolean(validatedUser);
+            const existeUsuario = Boolean(validatedUser);
+            if (existeUsuario) {
+                logger.verbose(`Cliente Autentificado`);
+            } else {
+                logger.error('WS Unauthorized');
+            }
+            return existeUsuario;
         } catch (error) {
-            const logger = new Logger();
             logger.error('WS Unauthorized');
             return false;
         }

@@ -4,8 +4,6 @@ import { ChatController } from './chat.controller';
 import { ChatGateway } from './chat.gateway';
 import { UsuarioModule } from '../usuario/usuario.module';
 import { AuthModule } from '../auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
-
 @Module({
   imports: [
     UsuarioModule,
