@@ -24,10 +24,10 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
             const logger = new Logger();
             try {
                 const authToken = request.headers.authorization.replace("Bearer ", "").trim();
-                const { user } = <TokenUser>jwt.verify(authToken, jwtConstants.secret);
-                const validatedUser: Partial<UsuarioEntity> = await this.authService.validateUser(
+                const deco = jwt.verify(authToken, jwtConstants.secret);
+                const user: Partial<UsuarioEntity> = jwt.verify(authToken, jwtConstants.secret) as Partial<UsuarioEntity>;
+                const validatedUser: Partial<UsuarioEntity> = await this.authService.validateByUsername(
                     user.username,
-                    user.password,
                 );
                 // Bonus if you need to access your user after the guard 
                 const existeUsuario = Boolean(validatedUser);
@@ -39,7 +39,7 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
                     return allowFunction(null, false)
                 }
             } catch (e) {
-                console.warn("Failed to authenticate user:", e)
+                logger.error('WS Unauthorized');
                 return allowFunction("Unauthorized", false)
             }
         }
