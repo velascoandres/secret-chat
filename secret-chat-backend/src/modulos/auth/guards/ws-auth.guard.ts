@@ -22,10 +22,9 @@ export class WsAuthGuard implements CanActivate {
             const data = context.switchToWs().getData();
             const authHeader = data.headers.authorization;
             const authToken = authHeader.replace('Bearer', '').trim();
-            const { user } = <TokenUser>jwt.verify(authToken, jwtConstants.secret);
-            const validatedUser: Partial<UsuarioEntity> = await this._authService.validateUser(
+            const user: Partial<UsuarioEntity> = jwt.verify(authToken, jwtConstants.secret) as Partial<UsuarioEntity>;
+            const validatedUser: Partial<UsuarioEntity> = await this._authService.validateByUsername(
                 user.username,
-                user.password,
             );
             // Bonus if you need to access your user after the guard 
             context.switchToWs().getData().user = validatedUser;
