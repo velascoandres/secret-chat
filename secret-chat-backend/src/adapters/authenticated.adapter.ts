@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 import { INestApplicationContext, Logger } from '@nestjs/common';
-import * as jwt from 'jsonwebtoken';
 import { IoAdapter } from '@nestjs/platform-socket.io';
-import { AuthService, TokenUser } from 'src/modulos/auth/auth.service';
+import { AuthService } from 'src/modulos/auth/auth.service';
+import * as jwt from 'jsonwebtoken';
+import { ServerOptions } from 'socket.io';
 import { jwtConstants } from 'src/modulos/auth/constants';
 import { UsuarioEntity } from 'src/modulos/usuario/usuario.entity';
-import { ServerOptions } from 'socket.io';
 
 export class AuthenticatedSocketIoAdapter extends IoAdapter {
 

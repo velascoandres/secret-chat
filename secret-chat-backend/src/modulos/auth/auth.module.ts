@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { WsAuthGuard } from './guards/ws-auth.guard';
+import { WsAuthStrategy } from './strategies/ws-auth.strategy';
 
 @Module(
   {
@@ -17,6 +18,7 @@ import { WsAuthGuard } from './guards/ws-auth.guard';
       LocalStrategy,
       JwtRefreshStrategy,
       WsAuthGuard,
+      WsAuthStrategy,
     ],
     imports: [
       UsuarioModule,
