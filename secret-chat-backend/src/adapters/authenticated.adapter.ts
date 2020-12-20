@@ -6,6 +6,7 @@ import * as jwt from 'jsonwebtoken';
 import { ServerOptions } from 'socket.io';
 import { jwtConstants } from 'src/modulos/auth/constants';
 import { UsuarioEntity } from 'src/modulos/usuario/usuario.entity';
+import { validateUserWS } from 'src/modulos/auth/utils/validate-user-ws';
 
 export class AuthenticatedSocketIoAdapter extends IoAdapter {
 
@@ -22,14 +23,8 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
         options.allowRequest = async (request, allowFunction) => {
             const logger = new Logger();
             try {
-                const authToken = request.headers.authorization.replace("Bearer ", "").trim();
-                const deco = jwt.verify(authToken, jwtConstants.secret);
-                const user: Partial<UsuarioEntity> = jwt.verify(authToken, jwtConstants.secret) as Partial<UsuarioEntity>;
-                const validatedUser: Partial<UsuarioEntity> = await this.authService.validateByUsername(
-                    user.username,
-                );
-                // Bonus if you need to access your user after the guard 
-                const existeUsuario = Boolean(validatedUser);
+                const authToken = request.headers.authorization.replace('Bearer ', '').trim();
+                const existeUsuario = validateUserWS(authToken, this.authService);
                 if (existeUsuario) {
                     logger.verbose(`Cliente Autentificado`);
                     return allowFunction(null, true)
@@ -38,6 +33,7 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
                     return allowFunction(null, false)
                 }
             } catch (e) {
+                console.log(e);
                 logger.error('WS Unauthorized');
                 return allowFunction("Unauthorized", false)
             }

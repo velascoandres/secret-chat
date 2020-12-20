@@ -6,13 +6,13 @@ services:
     restart: always
     environment:
       # Usuario de la base de datos
-      MONGO_INITDB_ROOT_USERNAME: 'username'
+      MONGO_INITDB_ROOT_USERNAME: 'pimba_man'
       # Password de la base de datos
-      MONGO_INITDB_ROOT_PASSWORD: '123'
+      MONGO_INITDB_ROOT_PASSWORD: '12345678'
       # Nombre de la Base de datos
-      MONGO_INITDB_DATABASE: 'base_usuario'
+      MONGO_INITDB_DATABASE: 'prueba'
       # Root password
-      MONGODB_ROOT_PASSWORD: '123'
+      MONGODB_ROOT_PASSWORD: '12345678'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - '30503:27017'
