@@ -1,8 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, Logger } from "@nestjs/common";
-import { AuthService, TokenUser } from "../auth.service";
-import * as jwt from 'jsonwebtoken';
-import { jwtConstants } from "../constants";
-import { UsuarioEntity } from "src/modulos/usuario/usuario.entity";
+import { AuthService, } from "../auth.service";
+import { validateUserWS } from "../utils/validate-user-ws";
 
 
 
@@ -19,14 +17,9 @@ export class WsAuthGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const logger = new Logger();
         try {
-            const data = context.switchToWs().getData();
-            const authHeader = data.headers.authorization;
-            const authToken = authHeader.replace('Bearer', '').trim();
-            const user: Partial<UsuarioEntity> = jwt.verify(authToken, jwtConstants.secret) as Partial<UsuarioEntity>;
-            const validatedUser: Partial<UsuarioEntity> = await this._authService.validateByUsername(
-                user.username,
-            );
-            // Bonus if you need to access your user after the guard 
+            const resquest = context.switchToWs().getData();
+            const validatedUser = await validateUserWS(resquest, this._authService);
+            // If you need to access your user after validate
             context.switchToWs().getData().user = validatedUser;
             const existeUsuario = Boolean(validatedUser);
             if (existeUsuario) {
