@@ -1,4 +1,4 @@
-import { OnGatewayConnection, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { OnGatewayConnection, SubscribeMessage, WebSocketGateway, WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { MensajeInterface } from '../../interfaces/interfaces-types';
 import { Utils } from '../../utils';
@@ -6,23 +6,43 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { UsuarioEntity } from '../usuario/usuario.entity';
 import { Logger, UseGuards } from '@nestjs/common';
 import { WsAuthGuard } from '../auth/guards/ws-auth.guard';
+import { AuthService } from '../auth/auth.service';
+import { getUserFromToken, validateUserWS } from '../auth/utils/validate-user-ws';
+import { HttpException } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
+import { OnGatewayDisconnect } from '@nestjs/websockets';
 
-@UseGuards(WsAuthGuard)
 @WebSocketGateway(3001, { namespace: 'chat' })
-export class ChatGateway implements OnGatewayConnection {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
     private readonly _usuarioService: UsuarioService,
+    private readonly _authService: AuthService,
   ) {
   }
 
+  private async _handleConnDisconn(client: any, isConn: boolean) {
+    const request = client.handshake;
+    const user = await getUserFromToken(request);
+    const userId = user.id;
+    const userToUpdate: any = { ...user, online: isConn };
+    const updateRespose = await this._usuarioService.updateOne(userId.toString(), userToUpdate);
+  }
 
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  handleConnection(client: any): void {
+  async handleConnection(client: any): Promise<void> {
     const logger = new Logger();
+    this._handleConnDisconn(client, true);
     logger.verbose('Cliente conectado al gateway: chat');
   }
+
+  handleDisconnect(client: any) {
+    const logger = new Logger();
+    this._handleConnDisconn(client, false);
+    logger.warn('Cliente desconectado del gateway: chat');
+  }
+
+
 
   async encontrarUsuario(username: string): Promise<UsuarioEntity> {
     const consulta = {
@@ -40,6 +60,7 @@ export class ChatGateway implements OnGatewayConnection {
     return respuestaConsulta[0][0];
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('intermediario-chat')
   intermediadioChat(client: Socket, mensaje: MensajeInterface): void {
     const esMensajePrivado = !!mensaje.destinatario;
@@ -69,6 +90,7 @@ export class ChatGateway implements OnGatewayConnection {
     }
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('chat-general-info')
   registrarse(client: Socket, usuario: UsuarioEntity): void {
     client.emit('chat-general-info', 'todo bien');

@@ -3,6 +3,7 @@ import { AbstractMongoService } from '@pimba/excalibur/lib';
 import { UsuarioEntity } from './usuario.entity';
 import { FindConditions, FindManyOptions, MongoRepository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UsuarioService extends AbstractMongoService<UsuarioEntity> {

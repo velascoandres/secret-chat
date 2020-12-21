@@ -18,7 +18,7 @@ export class WsAuthGuard implements CanActivate {
         const logger = new Logger();
         try {
             const resquest = context.switchToWs().getData();
-            const validatedUser = await validateUserWS(resquest, this._authService);
+            const validatedUser = await validateUserWS(resquest, this._authService, logger);
             // If you need to access your user after validate
             context.switchToWs().getData().user = validatedUser;
             const existeUsuario = Boolean(validatedUser);

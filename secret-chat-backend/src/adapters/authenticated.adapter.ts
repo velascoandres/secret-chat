@@ -19,7 +19,7 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
         options.allowRequest = async (request, allowFunction) => {
             const logger = new Logger();
             try {
-                const existeUsuario = validateUserWS(request, this.authService);
+                const existeUsuario = await validateUserWS(request, this.authService, logger);
                 if (existeUsuario) {
                     logger.verbose(`Cliente Autentificado`);
                     return allowFunction(null, true)
@@ -37,7 +37,13 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
         return super.createIOServer(port, options);
     }
 
+    bindClientConnect(server: any, callback: Function){
+        console.log(server);
+        super.bindClientConnect(server, callback);
+    }
+
     close(server) {
+        console.log(server);
         server.close();
     }
 }
