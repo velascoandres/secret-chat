@@ -7,9 +7,7 @@ import { UsuarioEntity } from '../usuario/usuario.entity';
 import { Logger, UseGuards } from '@nestjs/common';
 import { WsAuthGuard } from '../auth/guards/ws-auth.guard';
 import { AuthService } from '../auth/auth.service';
-import { getUserFromToken, validateUserWS } from '../auth/utils/validate-user-ws';
-import { HttpException } from '@nestjs/common';
-import { HttpStatus } from '@nestjs/common';
+import { getUserFromToken } from '../auth/utils/validate-user-ws';
 import { OnGatewayDisconnect } from '@nestjs/websockets';
 
 @WebSocketGateway(3001, { namespace: 'chat' })

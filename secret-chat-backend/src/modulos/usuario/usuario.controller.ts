@@ -1,11 +1,12 @@
 import { Controller } from '@nestjs/common';
-import { CrudController, CrudOptions } from '@pimba/excalibur/lib';
+import { CrudController, CrudGuards, CrudOptions } from '@pimba/excalibur/lib';
 import { UsuarioEntity } from './usuario.entity';
 import { UsuarioService } from './usuario.service';
 import { UsuarioCreateDto } from './dtos/usuario-create.dto';
 import { UsuarioUpdateDto } from './dtos/usuario-update.dto';
 import {CrudDoc} from '@pimba/excalibur/lib';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 
 
 
@@ -20,6 +21,11 @@ const options: CrudOptions = {
 
 
 @ApiTags('users')
+@CrudGuards(
+  {
+    findAll: [LocalAuthGuard]
+  }
+)
 @CrudDoc(
   {
     createMany: {
