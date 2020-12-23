@@ -6,7 +6,7 @@ import { UsuarioCreateDto } from './dtos/usuario-create.dto';
 import { UsuarioUpdateDto } from './dtos/usuario-update.dto';
 import {CrudDoc} from '@pimba/excalibur/lib';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
-import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 
 
@@ -23,7 +23,7 @@ const options: CrudOptions = {
 @ApiTags('users')
 @CrudGuards(
   {
-    findAll: [LocalAuthGuard]
+    findAll: [JwtAuthGuard]
   }
 )
 @CrudDoc(

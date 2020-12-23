@@ -9,6 +9,9 @@ import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { WsAuthGuard } from './guards/ws-auth.guard';
 import { WsAuthStrategy } from './strategies/ws-auth.strategy';
+import { forwardRef } from '@nestjs/common';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtStrategy } from './strategies/jwt-strategy';
 
 @Module(
   {
@@ -19,9 +22,11 @@ import { WsAuthStrategy } from './strategies/ws-auth.strategy';
       JwtRefreshStrategy,
       WsAuthGuard,
       WsAuthStrategy,
+      LocalAuthGuard,
+      JwtStrategy,
     ],
     imports: [
-      UsuarioModule,
+      forwardRef(() => UsuarioModule),
       JwtModule.register({}),
       PassportModule.register({ defaultStrategy: 'local', refresh: 'jwt-refresh' }),
     ],
@@ -31,6 +36,9 @@ import { WsAuthStrategy } from './strategies/ws-auth.strategy';
     exports: [
       WsAuthGuard,
       AuthService,
+      LocalStrategy,
+      LocalAuthGuard,
+      JwtStrategy,
     ]
   },
 )
