@@ -32,7 +32,7 @@ export class AuthService {
                         { email: { '$eq': username }, },
                     ],
                 },
-            }
+            } as any
         );
         if (!user) return;
         const passwordCorrect = bcrypt.compareSync(pass, user.password);

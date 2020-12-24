@@ -23,6 +23,7 @@ import { UserSubscriber } from './modulos/usuario/user.subscriber';
         host: 'localhost',
         port: 30503,
         authSource: 'admin',
+        migrationsRun: true,
         entities: [
           UsuarioEntity,
         ],
