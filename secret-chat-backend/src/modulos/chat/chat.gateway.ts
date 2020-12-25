@@ -19,12 +19,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
   }
 
-  private async _handleConnDisconn(client: any, isConn: boolean) {
-    const request = client.handshake;
-    const user = await getUserFromToken(request);
-    const userId = user.id;
-    const userToUpdate: any = { ...user, online: isConn };
-    const updateRespose = await this._usuarioService.updateOne(userId.toString(), userToUpdate);
+  private async _handleConnDisconn(client: Socket, isConn: boolean) {
+    try {
+      const request = client.handshake;
+      const user = await getUserFromToken(request);
+      const userId = user.id;
+      const userToUpdate: any = { ...user, online: isConn };
+      const updateRespose = await this._usuarioService.updateOne(userId.toString(), userToUpdate);
+      client.join(userId.toString());
+    } catch (error) {
+      client.disconnect();
+    }
+
   }
 
 
@@ -42,49 +48,29 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 
 
-  async encontrarUsuario(username: string): Promise<UsuarioEntity> {
+  async encontrarUsuario(id: string): Promise<UsuarioEntity> {
     const consulta = {
       where: {
-        $or: [
-          { username: { '$eq': username } },
-          { email: { '$eq': username }, },
-        ],
+        id: { '$eq': id },
       },
     };
-    const respuestaConsulta: [UsuarioEntity[], number] = await this._usuarioService
+    const [[usuario]] = await this._usuarioService
       .findAll(
         consulta,
       );
-    return respuestaConsulta[0][0];
+    return usuario;
   }
 
-  @UseGuards(WsAuthGuard)
-  @SubscribeMessage('intermediario-chat')
-  intermediadioChat(client: Socket, mensaje: MensajeInterface): void {
-    const esMensajePrivado = !!mensaje.destinatario;
-    if (esMensajePrivado) {
-      const destinario = mensaje.destinatario;
-
-      const existeUsuario = this.encontrarUsuario(destinario);
-      if (existeUsuario) {
-        // Enviamos el mensaje al destinario por su canal personal
-        mensaje.fechaEnvio = Utils.obtenerFechaActual;
-        client.to(destinario).emit(
-          'chat',
-          mensaje,
-        );
-      } else {
-        client.send(
-          {
-            mensaje: 'No existe un usuario con ese nombre!!',
-            error: true,
-          },
-        );
-      }
-    } else {
+  @SubscribeMessage('mensaje-personal')
+  async chat(client: Socket, mensaje: MensajeInterface) {
+    const destinario = mensaje.destinatario;
+    const existeUsuario = await this.encontrarUsuario(destinario);
+    if (existeUsuario) {
+      // Enviamos el mensaje al destinario por su canal personal
       mensaje.fechaEnvio = Utils.obtenerFechaActual;
-      client.broadcast.emit('chat-general', mensaje);
-      client.emit('chat-general', mensaje);
+      client.broadcast.to(destinario).emit('mensaje-personal', mensaje);
+    } else {
+      throw new WsException('No existe un usuario con ese nombre!!');
     }
   }
 
