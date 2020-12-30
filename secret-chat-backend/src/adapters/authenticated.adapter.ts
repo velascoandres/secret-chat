@@ -28,7 +28,6 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
                     return allowFunction(null, false)
                 }
             } catch (e) {
-                console.log(e);
                 logger.error('WS Unauthorized');
                 return allowFunction("Unauthorized", false)
             }
@@ -38,12 +37,10 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
     }
 
     bindClientConnect(server: any, callback: Function){
-        console.log(server);
         super.bindClientConnect(server, callback);
     }
 
     close(server) {
-        console.log(server);
         server.close();
     }
 }

@@ -1,9 +1,14 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Body, Request, Controller, InternalServerErrorException, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Request,
+    Controller,
+    InternalServerErrorException,
+    Post,
+    UseGuards
+} from '@nestjs/common';
 import { UsuarioCreateDto } from '../usuario/dtos/usuario-create.dto';
 import { UsuarioEntity } from '../usuario/usuario.entity';
 import { AuthService, TokenUser } from './auth.service';
-import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RegisterUserValidationPipe } from './pipes/register-user-validation.pipe';
 

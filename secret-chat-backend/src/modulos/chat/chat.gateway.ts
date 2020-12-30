@@ -6,7 +6,6 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { UsuarioEntity } from '../usuario/usuario.entity';
 import { Logger, UseGuards } from '@nestjs/common';
 import { WsAuthGuard } from '../auth/guards/ws-auth.guard';
-import { AuthService } from '../auth/auth.service';
 import { getUserFromToken } from '../auth/utils/validate-user-ws';
 import { OnGatewayDisconnect } from '@nestjs/websockets';
 
@@ -15,7 +14,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
     private readonly _usuarioService: UsuarioService,
-    private readonly _authService: AuthService,
   ) {
   }
 
