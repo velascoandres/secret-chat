@@ -6,7 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioEntity } from './modulos/usuario/usuario.entity';
 import { ChatModule } from './modulos/chat/chat.module';
 import { AuthModule } from './modulos/auth/auth.module';
-import { UserSubscriber } from './modulos/usuario/user.subscriber';
+import { MessageEntity } from './modulos/message/message.entity';
+import { MessageModule } from './modulos/message/message.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { UserSubscriber } from './modulos/usuario/user.subscriber';
         type: 'mongodb',
         name: 'conexion_mongo',
         database: 'prueba',
-        dropSchema: false,
+        dropSchema: true,
         useUnifiedTopology: true,
         synchronize: true,
         password: '12345678',
@@ -23,15 +24,16 @@ import { UserSubscriber } from './modulos/usuario/user.subscriber';
         host: 'localhost',
         port: 30503,
         authSource: 'admin',
-        migrationsRun: true,
         entities: [
           UsuarioEntity,
+          MessageEntity,
         ],
       },
     ),
     UsuarioModule,
     ChatModule,
     AuthModule,
+    MessageModule,
   ],
   controllers: [
     AppController,
