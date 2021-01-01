@@ -1,4 +1,5 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { Req } from '@nestjs/common/decorators';
 import { CrudController, CrudOptions } from '@pimba/excalibur/lib';
 import { MessageCreateDto } from './dtos/message-create.dto';
 import { MessageUpdateDto } from './dtos/message-update.dto';
@@ -16,5 +17,11 @@ const options: CrudOptions = {
 export class MessageController extends CrudController(options) {
   constructor(private readonly _messageService: MessageService) {
     super(_messageService);
+  }
+
+  @Get('bandeja-mensajes')
+  async bandejaMensajes(@Req() request) {
+    console.log(request.user);
+    return 'Hola';
   }
 }
