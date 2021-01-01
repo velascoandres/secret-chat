@@ -27,7 +27,7 @@ export class MessageModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .forRoutes(
-        { path: 'message/bandeja-mensajes', method: RequestMethod.GET },
+        { path: 'message/bandeja-mensajes/:destino', method: RequestMethod.GET },
       );
   }
 }
