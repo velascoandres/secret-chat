@@ -1,5 +1,6 @@
 import { AbstractMongoEntity } from '@pimba/excalibur/lib';
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { MessageEntity } from '../message/message.entity';
 
 @Entity('usuario')
 export class UsuarioEntity extends AbstractMongoEntity {
@@ -28,6 +29,14 @@ export class UsuarioEntity extends AbstractMongoEntity {
     }
   )
   online = false;
+  
+
+  @OneToMany(type => MessageEntity, mensaje => mensaje.emisor)
+  mensajesEmitidos: MessageEntity[];  
+
+
+  @OneToMany(type => MessageEntity, mensaje => mensaje.destinatario)
+  mensajesRecibidos: MessageEntity[];  
 
   // @BeforeInsert()
   // hashPassword(): void {

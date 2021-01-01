@@ -1,20 +1,22 @@
 import { AbstractMongoEntity } from '@pimba/excalibur/lib';
-import {
-  Column,
-  Entity,
-  Index,
-} from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { UsuarioEntity } from '../usuario/usuario.entity';
 
 @Entity('message')
-@Index(['destinatario', 'emisor'])
 export class MessageEntity extends AbstractMongoEntity {
-  
-  @Column()
-  destinatario: UsuarioEntity;
+  @ManyToOne(
+    type => UsuarioEntity,
+    usuario => usuario.mensajesEmitidos,
+  )
+  destinatario: UsuarioEntity | string;
 
-  @Column()
-  emisor: UsuarioEntity;
+
+
+  @ManyToOne(
+    type => UsuarioEntity,
+    usuario => usuario.mensajesEmitidos,
+  )
+  emisor: UsuarioEntity | string;
 
   @Column()
   contenido: string;

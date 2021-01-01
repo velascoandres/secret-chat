@@ -6,21 +6,9 @@ import { MessageEntity } from './message.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [
-    TypeOrmModule
-      .forFeature(
-        [
-          MessageEntity,
-        ],
-        'conexion_mongo',
-      ),
-  ],
-  providers: [
-    MessageService,
-    MessageGateway,
-  ],
-  controllers: [
-    MessageController,
-  ]
+  imports: [TypeOrmModule.forFeature([MessageEntity], 'conexion_mongo')],
+  providers: [MessageService, MessageGateway],
+  controllers: [MessageController],
+  exports: [MessageService],
 })
-export class MessageModule { }
+export class MessageModule {}

@@ -12,4 +12,23 @@ export class MessageService extends AbstractMongoService<MessageEntity> {
   ) {
     super(_messageRespository);
   }
+
+  async guardarMensajeDesdeChat(mensaje: Partial<MessageEntity>) {
+    try {
+      const mensajeCreado = await this._messageRespository.save(mensaje);
+      return await this._messageRespository.findOne({
+        where: {
+          _id: mensajeCreado.id,
+        },
+        select: ['id','emisor']
+      });
+    } catch (error) {
+      console.error({
+        error,
+        mensaje: 'Error al crear el mensaje',
+        data: mensaje,
+      });
+      throw new Error('Error al crear el mensaje');
+    }
+  }
 }
