@@ -30,10 +30,10 @@ export class MessageController extends CrudController(options) {
     const usuario: UsuarioEntity = request.user;
     let skip = paginacion?.skip ? paginacion.skip : 0;
     let take = paginacion?.take ? paginacion.take : 30;
-    const criterioBusqueda = {
+    const searchCriteria = {
       $or: [
         {
-          destinatario:  usuario.id.toString(),
+          destinatario: usuario.id.toString(),
           emisor: destino,
         },
         {
@@ -42,10 +42,17 @@ export class MessageController extends CrudController(options) {
         },
       ],
     };
-    return await this._messageService.findAll({
-      where: criterioBusqueda,
+    const [messages, total] = await this._messageService.findAll({
+      where: searchCriteria,
       skip,
       take,
-    });
+      order: {
+        _id: 'DESC',
+      }
+    } as any);
+    return {
+      messages,
+      total,
+    };
   }
 }

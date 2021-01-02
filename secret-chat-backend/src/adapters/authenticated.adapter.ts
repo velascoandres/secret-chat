@@ -31,7 +31,7 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
                 logger.error('WS Unauthorized');
                 return allowFunction("Unauthorized", false)
             }
-        }
+        };
 
         return super.createIOServer(port, options);
     }

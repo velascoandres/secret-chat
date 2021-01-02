@@ -65,14 +65,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const existeUsuario = await this.encontrarUsuario(destinario as string);
     if (existeUsuario) {
       // Guardamos el mensaje
-      const mensajeGuardado = await this._messageService.createOne(
-        mensaje,
-      );
-      console.log(mensajeGuardado);
-      // Enviamos el mensaje al destinario por su canal personal
-      client.broadcast
-        .to(destinario as string)
-        .emit('mensaje-personal', mensajeGuardado);
+      const mensajeGuardado = await this._messageService.createOne(mensaje);      // Enviamos el mensaje al destinario por su canal personal
+      client.broadcast.to(destinario as string).emit(
+        'mensaje-personal',
+         {...mensajeGuardado, createdAt: mensajeGuardado['created_at'], updatedAt: mensajeGuardado['updated_at']},
+         );
     } else {
       throw new WsException('No existe un usuario con ese nombre!!');
     }
